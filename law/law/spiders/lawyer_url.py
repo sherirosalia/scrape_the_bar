@@ -4,8 +4,19 @@ import scrapy
 class LawyerUrlSpider(scrapy.Spider):
     name = 'lawyer_url'
     allowed_domains = ['members.calbar.ca.gov']
-    start_urls = ['http://members.calbar.ca.gov/fal/LicenseeSearch/AdvancedSearch?LastNameOption=b&LastName=&FirstNameOption=b&FirstName=a&MiddleNameOption=b&MiddleName=&FirmNameOption=b&FirmName=&CityOption=b&City=&State=&Zip=&District=&County=&LegalSpecialty=&LanguageSpoken=']
+    # start_urls = ['http://members.calbar.ca.gov/fal/LicenseeSearch/AdvancedSearch?LastNameOption=b&LastName=&FirstNameOption=b&FirstName=a&MiddleNameOption=b&MiddleName=&FirmNameOption=b&FirmName=&CityOption=b&City=&State=&Zip=&District=&County=&LegalSpecialty=&LanguageSpoken=']
+    # la_url = 'http://members.calbar.ca.gov/fal/LicenseeSearch/AdvancedSearch?LastNameOption=b&LastName=sm&FirstNameOption=b&FirstName=&MiddleNameOption=b&MiddleName=&FirmNameOption=b&FirmName=&CityOption=b&City=&State=&Zip=&District=&County=LA&LegalSpecialty=&LanguageSpoken='
 
+    def start_requests(self):
+        alphabet='abcdefghijklmnopqrstuvwxyz'
+        
+        
+        for letter1 in alphabet:
+            for letter2 in alphabet:
+                letters = letter1+letter2
+                la_url = f'http://members.calbar.ca.gov/fal/LicenseeSearch/AdvancedSearch?LastNameOption=b&LastName={letters}&FirstNameOption=b&FirstName=&MiddleNameOption=b&MiddleName=&FirmNameOption=b&FirmName=&CityOption=b&City=&State=&Zip=&District=&County=LA&LegalSpecialty=&LanguageSpoken='
+
+                yield scrapy.Request(la_url, self.parse)
 
     # stopping notes: able to parse first td of row but need to adjust selector to isolate name 
 
